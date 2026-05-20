@@ -15,6 +15,7 @@ function InputComponet(props: Props) {
       id: Date.now(),
 
       title: `${text}`,
+      isComplate: false,
     });
     await AsyncStorage.setItem("todos", JSON.stringify(todos));
     console.log("성공");
