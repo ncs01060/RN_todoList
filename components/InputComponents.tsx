@@ -1,12 +1,25 @@
 import { useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
-
+import AsyncStorage from "@react-native-async-storage/async-storage";
 interface Props {
   title: string;
 }
 
 function InputComponet(props: Props) {
   const [text, setText] = useState<string>("");
+
+  const onSubmit = async (): Promise<string> => {
+    const data = await AsyncStorage.getItem("todos");
+    const todos = data ? JSON.parse(data) : [];
+    todos.push({
+      id: Date.now(),
+
+      title: `${text}`,
+    });
+    await AsyncStorage.setItem("todos", JSON.stringify(todos));
+    console.log("성공");
+    return "성공";
+  };
 
   return (
     <View style={styles.container}>
@@ -16,7 +29,7 @@ function InputComponet(props: Props) {
         value={text}
         placeholder={props.title}
       />
-      <Button title="등록" />
+      <Button title="등록" onPress={onSubmit} />
     </View>
   );
 }

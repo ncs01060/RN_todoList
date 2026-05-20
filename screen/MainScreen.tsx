@@ -1,15 +1,41 @@
 import { StyleSheet, Text, View } from "react-native";
-import item from "../data/testData.json";
-import TodoItem from "../components/TodoItem";
 import { StatusBar } from "expo-status-bar";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import { useCallback } from "react";
+import { useEffect, useState } from "react";
+
+import TodoItem from "../components/TodoItem";
 
 function MainScreen() {
-  const items = item;
+  const [items, setItems] = useState<any[]>([]);
+
+  const loadTodo = async () => {
+    const data = await AsyncStorage.getItem("todos");
+
+    if (data) {
+      const todos = JSON.parse(data);
+
+      setItems(todos);
+    }
+  };
+
+  useEffect(() => {
+    loadTodo();
+  }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      loadTodo();
+    }, []),
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Todo</Text>
+
       {items.map((item) => (
-        <TodoItem title={item.title} id={item.id} key={item.id} />
+        <TodoItem key={item.id} id={item.id} title={item.title} />
       ))}
 
       <StatusBar style="auto" />
@@ -26,6 +52,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   title: {
     fontSize: 30,
     fontWeight: "bold",
