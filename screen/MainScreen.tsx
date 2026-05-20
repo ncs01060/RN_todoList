@@ -1,32 +1,27 @@
 import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
 import { useEffect, useState } from "react";
+import { loadTodo } from "../db/Store";
 
 import TodoItem from "../components/TodoItem";
 
 function MainScreen() {
   const [items, setItems] = useState<any[]>([]);
 
-  const loadTodo = async () => {
-    const data = await AsyncStorage.getItem("todos");
-
-    if (data) {
-      const todos = JSON.parse(data);
-
-      setItems(todos);
-    }
+  const refresh = async () => {
+    const data = await loadTodo();
+    setItems(data);
   };
 
   useEffect(() => {
-    loadTodo();
+    refresh();
   }, []);
 
   useFocusEffect(
     useCallback(() => {
-      loadTodo();
+      refresh();
     }, []),
   );
 
@@ -35,7 +30,12 @@ function MainScreen() {
       <Text style={styles.title}>Todo</Text>
 
       {items.map((item) => (
-        <TodoItem key={item.id} id={item.id} title={item.title} />
+        <TodoItem
+          key={item.id}
+          id={item.id}
+          title={item.title}
+          isComplate={item.isComplate}
+        />
       ))}
 
       <StatusBar style="auto" />
