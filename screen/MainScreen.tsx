@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { loadTodo } from "../db/Store";
 
 import TodoItem from "../components/TodoItem";
@@ -14,10 +14,6 @@ function MainScreen() {
     const data = await loadTodo();
     setItems(data);
   };
-
-  useEffect(() => {
-    refresh();
-  }, []);
 
   useFocusEffect(
     useCallback(() => {
