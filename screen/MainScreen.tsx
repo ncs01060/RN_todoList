@@ -23,8 +23,6 @@ function MainScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Todo</Text>
-
       {items.map((item) => (
         <TodoItem
           key={item.id}
