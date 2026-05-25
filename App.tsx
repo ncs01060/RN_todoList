@@ -10,7 +10,7 @@ export default function App() {
   return (
     <NavigationContainer>
       <Tap.Navigator>
-        <Tap.Screen name="Home" component={MainScreen} />
+        <Tap.Screen name="Todo" component={MainScreen} />
         <Tap.Screen name="Input" component={InputScreen} />
       </Tap.Navigator>
     </NavigationContainer>
