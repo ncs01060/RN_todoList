@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { createTodo } from "../db/Store";
 interface Props {
   title: string;
 }
@@ -9,17 +10,13 @@ function InputComponet(props: Props) {
   const [text, setText] = useState<string>("");
 
   const onSubmit = async (): Promise<string> => {
-    const data = await AsyncStorage.getItem("todos");
-    const todos = data ? JSON.parse(data) : [];
-    todos.push({
-      id: Date.now(),
-
-      title: `${text}`,
-      isComplate: false,
-    });
-    await AsyncStorage.setItem("todos", JSON.stringify(todos));
-    console.log("성공");
-    return "성공";
+    let result = await createTodo(text);
+    if (result) {
+      console.log("성공");
+      return "성공";
+    } else {
+      return "실패";
+    }
   };
 
   return (
