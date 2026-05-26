@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { useFocusEffect } from "@react-navigation/native";
 import { useCallback } from "react";
@@ -23,14 +23,17 @@ function MainScreen() {
 
   return (
     <View style={styles.container}>
-      {items.map((item) => (
-        <TodoItem
-          key={item.id}
-          id={item.id}
-          title={item.title}
-          isComplate={item.isComplate}
-        />
-      ))}
+      <FlatList
+        data={items}
+        renderItem={({ item }) => (
+          <TodoItem
+            key={item.id}
+            id={item.id}
+            title={item.title}
+            isComplate={item.isComplate}
+          />
+        )}
+      ></FlatList>
 
       <StatusBar style="auto" />
     </View>
